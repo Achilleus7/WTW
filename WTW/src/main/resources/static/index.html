@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Weather</title>
+    <style>
+    </style>
+</head>
+
+<body>
+<center>
+    <h2>Today's Clothing Reccomendations</h2>
+    <p>We will reccomend what type of clothing you should wear today based on the weather conditions. Enter your zip code to get started!</p>
+
+    <!connect to glassfish server here?>
+    <script type="text/javascript" src="connect.js"></script>
+    <script type="text/javascript" src="getlocation.js"></script>
+
+
+    <!make sure user doesn't input non-numerals, and no more than around 10 characters>
+    <form action="reccommend.html" method="post">
+        <div class="container">
+            <label for="zip"><b>Enter zipcode: </b></label>
+            <input type="text" placeholder="Zipcode" id="zip" name="zip" required>
+            <br><br>
+            <label>
+            </label>
+            <button onclick="require()" type="submit">Enter</button>
+        </div>
+
+        <!send user to reccommend.html after submitting this>
+        <script>
+            function require() {
+                document.getElementById("zip").required = true;
+            }
+        </script>
+
+        <br>
+        <p>Create an account to make your own settings for clothing reccomendations!
+
+        <p>Create a <a href="signup.html">new account</a>.</p>
+        <p>Already have an account? <a href="signin.html">Login</a></p>
+
+    </form>
+
+</center>
+</body>
+</html>

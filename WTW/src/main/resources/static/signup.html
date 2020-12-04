@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+ <title>Sign up</title>
+ <style>
+</style>
+</head>
+
+<body>
+<div class ="signup">
+<center>
+
+<!add options for user to decide weather reccommendation settings in this form>
+
+ <form action="createaccount.js" method="post">
+
+ <h2>Sign Up</h2>
+ <p><a href="index.html">Return to homepage.</a></p>
+
+ <div class="container">
+  <label for="uname"><b>Username</b></label>
+  <input type="text" placeholder="Username" id="uname" name="uname" required>
+  <br>
+  <label for="pass"><b>Password</b></label>
+  <input type="password" placeholder="Password" id="pass" name="pass" required>
+  <br>
+	<label for="zip"><b>Zipcode</b></label>
+	<input type="text" placeholder="Zipcode" id="zip" name="zip" required>
+  <br><br>
+  <label>
+   <span><input type="checkbox" id="agreement" name="agreement"><span> I agree to the terms and the services.
+  </label>
+  <br><br>
+  <button onclick="require()" type="submit">Make account</button>
+ </div>
+ 
+ <script>
+  function require() {
+	document.getElementById("uname").required = true;
+	document.getElementById("pass").required = true;
+	document.getElementById("zip").required = true;
+	document.getElementById("agreement").required = true;
+  }
+ </script>
+	
+ <br>
+ 
+ </form>
+ <br><hr>
+ <p>Already have an account? <a href="signin.html">Sign in</a></p>
+
+   </form>
+ </div>
+</center>
+</body>
+</html>
