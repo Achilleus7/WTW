@@ -5,7 +5,7 @@
  <script>
   function addUser()
   {
-   const user=document.getElementById("username").value;
+   const username=document.getElementById("username").value;
    const password=document.getElementById("pass").value;
    const zip = document.getElementById("zip").value;
 
@@ -13,11 +13,11 @@
    const shirtRec = document.getElementById("shirt").value;
    const jacketRec = document.getElementById("jacket").value;
    const coatRec = document.getElementById("coat").value;
-   
+
    localStorage["user"] = username;
-   
+
    const data = {
-    username: user,
+    username: username,
     password: password,
     zipCode: zip,
     jacketThreshold: jacketRec,
@@ -29,6 +29,13 @@
      'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
+   })
+   .then(response => response.json())
+   .then(data => {
+     console.log('Success:', data);
+   })
+   .catch((error) => {
+     console.error('Error:', error);
    });
   }
 
@@ -38,8 +45,7 @@
 </head>
 
 <body>
-<div class ="signup">
-<center>
+<div class ="signup" style="text-align:center">
  
  <!needs to list the unit for temperature>
 
@@ -49,11 +55,11 @@
  <p><a href="index.html">Return to homepage.</a></p>
 
  <div class="container">
-  <label for="uname"><b>Username</b></label>
+  <label for="username"><b>Username</b></label>
   <input type="text" placeholder="Username" id="username" name="username" required>
   <br><br>
   
-  <label for="pass"><b>Password</b></label>
+  <label for="password"><b>Password</b></label>
   <input type="password" placeholder="Password" id="password" name="password" required>
   <br><br>
   
@@ -78,7 +84,7 @@
   <br><br>
   
   <br>
-  <label><span><input type="checkbox" id="agreement" name="agreement" required><span> I agree to the terms and the services.</label>
+  <label><span><input type="checkbox" id="agreement" name="agreement" required></span> I agree to the terms and the services.</label>
   <br><br>
   
   <button type="submit" onclick="addUser()">Make account</button>
@@ -92,6 +98,5 @@
 
    </form>
  </div>
-</center>
 </body>
 </html>
