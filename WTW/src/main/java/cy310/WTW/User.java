@@ -15,6 +15,8 @@ public class User {
     private int zipCode;
     private int jacketThreshold;
     private int coatThreshold;
+    private int shortsRec;
+    private int shirtRec;
 
 
 
@@ -77,6 +79,22 @@ public class User {
 
     public void setCoatThreshold(int coatThreshold) {
         this.coatThreshold = coatThreshold;
+    }
+
+    public int getShortsRec() {
+        return shortsRec;
+    }
+
+    public void setShortsRec(int shortsRec) {
+        this.shortsRec = shortsRec;
+    }
+
+    public int getShirtRec() {
+        return shirtRec;
+    }
+
+    public void setShirtRec(int shirtRec) {
+        this.shirtRec = shirtRec;
     }
 
     @Override
