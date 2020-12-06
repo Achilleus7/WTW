@@ -25,6 +25,12 @@ public class UserController {
         return repository.findByUsername(username);
     }
 
+    @GetMapping(value = "weatherdata")
+    WeatherData getWeatherData()
+    {
+        return new WeatherData();
+    }
+
     @ExceptionHandler(com.mongodb.MongoWriteException.class)
     public @ResponseBody
     HttpStatus handleException()
