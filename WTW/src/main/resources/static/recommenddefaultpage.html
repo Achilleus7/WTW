@@ -13,6 +13,13 @@
  <p><a href="index.html">Return to homepage.</a></p>
 
  <script>
+    /*
+    fetch('http://localhost:8080/weatherdata')
+     .then(response => response.json());
+     .then(json => console.log(json));
+
+    */
+
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
 	const zip = urlParams.get('zip');
