@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+ <title>Sign up</title>
+ <script>
+
+  function addUser()
+  {
+
+   var user=document.getElementById("uname").value;
+   var password=document.getElementById("pass").value;
+   var zip = document.getElementById("zip").value;
+
+   var shortsRec = document.getElementById("shorts").value;
+   var shirtRec = document.getElementById("shirt").value;
+   var jacketRec = document.getElementById("jacket").value;
+   var coatRec = document.getElementById("coat").value;
+   const data = {
+    username: user,
+    password: password,
+    zipCode: zip,
+    jacketThreshold: jacketRec,
+    coatThreshold: coatRec
+   };
+   fetch('http://localhost:8080/newuser', {
+    method: 'POST', // or 'PUT'
+    headers: {
+     'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+   });
+  }
+
+ </script>
+ <style>
+</style>
+</head>
+
+<body>
+<div class ="signup">
+<center>
+ 
+ <!needs to list the unit for temperature>
+
+ <form action="homepage.html">
+
+ <h2>Sign Up</h2>
+ <p><a href="index.html">Return to homepage.</a></p>
+
+ <div class="container">
+  <label for="uname"><b>Username</b></label>
+  <input type="text" placeholder="Username" id="uname" name="uname" required>
+  <br><br>
+  
+  <label for="pass"><b>Password</b></label>
+  <input type="password" placeholder="Password" id="pass" name="pass" required>
+  <br><br>
+  
+	<label for="zip"><b>Zipcode</b></label>
+	<input type="number" max="9999999999" placeholder="Zipcode" id="zip" name="zip" required>
+  <br><br><h3>User Settings</h3>
+  
+  <label for="shorts">Recommend <b>shorts</b> when high temperature is </label> 
+  <input type="number" max="100" placeholder="e.g. 75" id="shorts" name="shorts" required> or higher.
+  <br>(At temperatures lower than this, pants will recommended.)<br><br>
+  
+  <label for="shirt">Recommend <b>T-shirts</b> when high temperature is </label> 
+  <input type="number" max="100" placeholder="e.g. 75" id="shirt" name="shirt" required> or higher.
+  <br>(At temperatures lower than this, long sleeve shirts will recommended.)<br><br>
+  
+  <label for="jacket">Recommend a <b>sweater/jacket</b> when low temperature is</label> 
+  <input type="number" max="100" placeholder="e.g. 60" id="jacket" name="jacket" required> or lower.
+  <br><br>
+  
+  <label for="coat">Recommend a <b>coat</b> when low temperature is</label> 
+  <input type="number" max="100" placeholder="e.g. 40" id="coat" name="coat" required> or lower.
+  <br><br>
+  
+  <br>
+  <label><span><input type="checkbox" id="agreement" name="agreement" required><span> I agree to the terms and the services.</label>
+  <br><br>
+  
+  <button type="submit" onclick="addUser()">Make account</button>
+ </div>
+
+ <br>
+ 
+ </form>
+ <br><hr>
+ <p>Already have an account? <a href="loginpage.html">Sign in</a></p>
+
+   </form>
+ </div>
+</center>
+</body>
+</html>
