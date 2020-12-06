@@ -1,13 +1,98 @@
 <!DOCTYPE HTML>
 <html>
 <head>
- <title>My Weather Page</title>
+ <title>Home Page</title>
 </head>
 
 <body>
 <center>
- <h2>My Weather Page</h2>
- <script type="text/javascript" src="recommenduser.js"></script>
+ <h2>Home Page</h2>
+ <script>
+	const username = localStorage["user"];
+	const zip = 0;//get from server with username
+	
+	//prints username and zipcode for testing
+	document.write("Welcome, " + username + "!<br>");
+	document.write("Zipcode: " + zip + "<br>");
+
+	//get this weather information from server with functions based on zip code provided above
+	const longitude = 0;
+	const latitude = 0;
+	const country = "";
+	const timezone = 0;
+	const sunrise = "";
+	const sunset = "";
+	const temp = 0;
+	const highTemp = 0;
+	const lowTemp = 0;
+	const tempUnit = "";
+	const feelsLike = 0;
+	const feelsUnit = "";
+	const humidity = 0;
+	const windSpeed = 0;
+	const windUnit = "";
+	const precipMode = "";
+
+	//return the user's values from the database here, using the username above
+	/*
+	const shortsRec = 0;
+	const shirtRec = 0;
+	const jacketRec = 0;
+	const coatRec = 0;
+	*/
+	
+	//testing, comment this area out after implemented above
+	const shortsRec = 75;
+	const shirtRec = 75;
+	const jacketRec = 60;
+	const coatRec = 40;
+
+	//displays current weather conditions
+	document.write("<h3>Weather Conditions:</h3>");
+	document.write("Sunrise: " + sunrise + "<br>");
+	document.write("Sunset: " + sunset + "<br>");
+	document.write("Current Temperature: " + temp + tempUnit + "<br>");
+	document.write("High Temperature: " + highTemp + tempUnit + "<br>");
+	document.write("Low Temperature: " + lowTemp + tempUnit + "<br>");
+	document.write("Feels Like: " + feelsLike + feelsUnit + "<br>");
+	document.write("Humidity: " + humidity + "%<br>");
+	document.write("Wind: " + windSpeed + " " + windUnit + "<br>");
+	document.write("Precipitation: " + precipMode + "<br>");
+
+	//displays recommendations
+	document.write("<br><h3>Today's Recommendations:</h3>");
+	if (highTemp >= shortsRec) {
+		document.write("Shorts/T-shirt<br>");
+	}
+	else {
+		document.write("Pants<br>");
+	}
+
+	if (highTemp >= shirtRec) {
+		document.write("T-shirt<br>");
+	}
+	else {
+		document.write("Long sleeve shirt<br>");
+	}
+
+	if (lowTemp <= jacketRec && lowTemp > coatRec) {
+		document.write("Sweater/Jacket<br>");
+	}
+	else if (lowTemp >= coatRec) {
+		document.write("Coat<br>");
+	}
+	
+	//adjust this based on how precipMode is returned from the server
+	/*
+	if (precipMode == "rain") {
+		document.write("Umbrella<br>");
+	}
+	else if (precipMode == "snow")
+		document.write("Snow boots<br>");
+	}
+	*/
+
+ </script>
 
 </center>
 </body>
