@@ -13,19 +13,20 @@
  <p><a href="index.html">Return to homepage.</a></p>
 
  <script>
-    /*
-    fetch('http://localhost:8080/weatherdata')
-     .then(response => response.json());
-     .then(json => console.log(json));
-
-    */
 
 	const queryString = window.location.search;
 	const urlParams = new URLSearchParams(queryString);
 	const zip = urlParams.get('zip');
 
+    fetch('http://localhost:8080/weatherdata/&zip')
+            .then(response => response.json())
+            .then(json => console.log(json));
+
+    const data = JSON.parse(json);
+
 	//get this weather information from server with functions based on zip code provided above
-	const longitude = 0;
+	/*
+    const longitude = 0;
 	const latitude = 0;
 	const country = "";
 	const timezone = 0;
@@ -41,6 +42,7 @@
 	const windSpeed = 0;
 	const windUnit = "";
 	const precipMode = "";
+    */
 
 	//variables for recommendations with default values
 	const shortsRec = 75;
@@ -52,36 +54,36 @@
 
 	//displays current weather conditions
 	document.write("<h3>Weather Conditions:</h3>");
-	document.write("Sunrise: " + sunrise + "<br>");
-	document.write("Sunset: " + sunset + "<br>");
-	document.write("Current Temperature: " + temp + tempUnit + "<br>");
-	document.write("High Temperature: " + highTemp + tempUnit + "<br>");
-	document.write("Low Temperature: " + lowTemp + tempUnit + "<br>");
-	document.write("Feels Like: " + feelsLike + feelsUnit + "<br>");
-	document.write("Humidity: " + humidity + "%<br>");
-	document.write("Wind: " + windSpeed + " " + windUnit + "<br>");
-	document.write("Precipitation: " + precipMode + "<br>");
+	document.write("Sunrise: " + data.sunrise + "<br>");
+	document.write("Sunset: " + data.sunset + "<br>");
+	document.write("Current Temperature: " + data.temp + data.tempUnit + "<br>");
+	document.write("High Temperature: " + data.max + data.tempUnit + "<br>");
+	document.write("Low Temperature: " + data.min + data.tempUnit + "<br>");
+	document.write("Feels Like: " + data.feelsLike + data.feelsUnit + "<br>");
+	document.write("Humidity: " + data.humidity + "%<br>");
+	document.write("Wind: " + data.windSpeed + " " + data.windUnit + "<br>");
+	document.write("Precipitation: " + data.precipMode + "<br>");
 
 	//displays recommendations
 	document.write("<br><h3>Today's Recommendations:</h3>");
-	if (highTemp >= shortsRec) {
+	if (data.max >= shortsRec) {
 		document.write("Shorts/T-shirt<br>");
 	}
 	else {
 		document.write("Pants<br>");
 	}
 
-	if (highTemp >= shirtRec) {
+	if (data.max >= shirtRec) {
 		document.write("T-shirt<br>");
 	}
 	else {
 		document.write("Long sleeve shirt<br>");
 	}
 
-	if (lowTemp <= jacketRec && lowTemp > coatRec) {
+	if (data.min <= jacketRec && data.min > coatRec) {
 		document.write("Sweater/Jacket<br>");
 	}
-	else if (lowTemp >= coatRec) {
+	else if (data.min >= coatRec) {
 		document.write("Coat<br>");
 	}
 	

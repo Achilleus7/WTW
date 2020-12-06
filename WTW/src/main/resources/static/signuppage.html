@@ -3,10 +3,15 @@
 <head>
  <title>Sign up</title>
  <script>
+  import bcrypt from 'bcrypt';
   function addUser()
   {
-   const username=document.getElementById("username").value;
-   const password=document.getElementById("pass").value;
+   const user = document.getElementById("username").value;
+
+   //const bcrypt = require('bcrypt');
+   //const saltRounds = 10;
+   const password = document.getElementById("password").value;
+
    const zip = document.getElementById("zip").value;
 
    const shortsRec = document.getElementById("shorts").value;
@@ -14,12 +19,17 @@
    const jacketRec = document.getElementById("jacket").value;
    const coatRec = document.getElementById("coat").value;
 
-   localStorage["user"] = username;
+   //localStorage["user"] = username;
+   localStorage.setItem('user', user);
 
+   //password hashing
+   //bcrypt.hash(password, saltRounds, (err, hash) ==> { });
    const data = {
-    username: username,
+    username: user,
     password: password,
     zipCode: zip,
+    //shortsThreshold: shortsRec
+    //shirtThreshold: shirtRec
     jacketThreshold: jacketRec,
     coatThreshold: coatRec
    };
@@ -30,13 +40,13 @@
     },
     body: JSON.stringify(data),
    })
-   .then(response => response.json())
-   .then(data => {
-     console.log('Success:', data);
-   })
-   .catch((error) => {
-     console.error('Error:', error);
-   });
+           .then(response => response.json())
+           .then(data => {
+            console.log('Success:', data);
+           })
+           .catch((error) => {
+            console.error('Error:', error);
+           });
   }
 
  </script>

@@ -6,7 +6,8 @@ function validate()
     const username=document.getElementById("username").value;
     const password=document.getElementById("password").value;
 	
-	localStorage["user"] = username;
+	//localStorage["user"] = username;
+    localStorage.setItem('user', user);
 	
 	//search up username in database and check whether the password matches the one in the database
 	

@@ -8,12 +8,17 @@
 <center>
  <h2>Home Page</h2>
  <script>
-	const username = localStorage["user"];
+	//const username = localStorage["user"];
+	const username = localStorage.getItem('user');
 	const zip = 0;//get from server with username
 
 	//prints username and zipcode for testing
 	document.write("Welcome, " + username + "!<br>");
 	document.write("Zipcode: " + zip + "<br>");
+
+    fetch('http://localhost:8080/weatherdata/{zip})')
+            .then(response => response.json())
+            .then(json => console.log(json));
 
 	//get this weather information from server with functions based on zip code provided above
 	const longitude = 0;
