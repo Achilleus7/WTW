@@ -3,9 +3,9 @@ import bcrypt from 'bcrypt';
 function addUser()
 {
     const user = document.getElementById("username").value;
-	
-	const bcrypt = require('bcrypt');
-	const saltRounds = 10;
+
+	//const bcrypt = require('bcrypt');
+	//const saltRounds = 10;
 	const password = document.getElementById("password").value;
 	
     const zip = document.getElementById("zip").value;
@@ -16,16 +16,15 @@ function addUser()
     const coatRec = document.getElementById("coat").value;
 	
 	//password hashing
-	bcrypt.hash(password, saltRounds, (err, hash) ==> {
-		const data = {
-			username: user,
-			password: password,
-			zipCode: zip,
-			jacketThreshold: jacketRec,
-			coatThreshold: coatRec
-		};
-	});
-	
+	//bcrypt.hash(password, saltRounds, (err, hash) ==> { });
+	const data = {
+	    username: user,
+        password: password,
+        zipCode: zip,
+        jacketThreshold: jacketRec,
+        coatThreshold: coatRec
+	};
+
     fetch('http://localhost:8080/newuser', {
         method: 'POST', // or 'PUT'
         headers: {
