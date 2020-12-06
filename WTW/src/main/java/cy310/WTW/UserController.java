@@ -25,10 +25,10 @@ public class UserController {
         return repository.findByUsername(username);
     }
 
-    @GetMapping(value = "weatherdata")
-    WeatherData getWeatherData()
+    @GetMapping(value = "/weatherdata/{zip}")
+    WeatherData getWeatherData(@PathVariable int zip)
     {
-        return new WeatherData();
+        return new WeatherData(zip);
     }
 
     @ExceptionHandler(com.mongodb.MongoWriteException.class)

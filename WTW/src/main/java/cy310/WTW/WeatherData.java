@@ -4,74 +4,63 @@ import javax.xml.stream.XMLStreamException;
 import java.io.FileNotFoundException;
 
 public class WeatherData {
-    int zip = 0;
-    float longitude;
-    float latitude;
+    int zip;
+    double longitude;
+    double latitude;
     String country;
-    int timezone;
-    String sunRise;
-    String sunSet;
-    int temp;
-    int min;
-    int max;
-    String unit;
-    int feelsLike;
-    String feelsUnit;
-    int humidNumber;
-    String percent;
-    int pressureNum;
-    String pressureUnit;
-    int windSpeed;
-    String windUnit;
-    String windName;
-    int gust;
-    String gustCode;
-    String gustDirection;
-    int cloudValue;
-    String cloudName;
-    int visibility;
-    String precipitationMode;
+    int sunRise;
+    int sunSet;
+    double temp;
+    double min;
+    double max;
+    double windSpeed;
 
-    public WeatherData() {
-        //Weather.fetchData();
-        zip = Weather.zip;
+    String weatherMain; //weather type?
+    String weatherDescription; //weather description
+    String weatherIcon; //weather Icon (useless for us)
+    double pressure; //pressure
+    double humidity; //humidity percentage
+    double degree; //degree of direction
+    int clouds;
+    int dt;
+    int id;
+    String name;
+    int cod;
+
+    public WeatherData(int zip) {
+        Weather.fetchData(zip);
+        this.zip = zip;
         longitude = Weather.longitude;
         latitude = Weather.latitude;
         country = Weather.country;
-        timezone = Weather.timezone;
         sunRise = Weather.sunRise;
         sunSet = Weather.sunSet;
         temp = Weather.temp;
         min =  Weather.min;
         max = Weather.max;
-        unit = Weather.unit;
-        feelsLike = Weather.feelsLike;
-        feelsUnit = Weather.feelsUnit;
-        humidNumber = Weather.humidNumber;
-        percent = Weather.percent;
-        pressureNum = Weather.pressureNum;
-        pressureUnit = Weather.pressureUnit;
         windSpeed = Weather.windSpeed;
-        windUnit = Weather.windUnit;
-        windName = Weather.windName;
-        gust = Weather.gust;
-        gustCode = Weather.gustCode;
-        gustDirection = Weather.gustDirection;
-        cloudValue = Weather.cloudValue;
-        cloudName = Weather.cloudName;
-        visibility = Weather.visibility;
-        precipitationMode = Weather.precipitationMode;
+        weatherMain = Weather.weatherMain;
+        weatherDescription = Weather.weatherDescription;
+        weatherIcon = Weather.weatherIcon;
+        pressure = Weather.pressure;
+        humidity = Weather.humidity;
+        degree = Weather.degree;
+        clouds = Weather.clouds;
+        dt = Weather.dt;
+        id = Weather.id;
+        name = Weather.name;
+        cod = Weather.cod;
     }
 
     public int getZip() {
         return zip;
     }
 
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
@@ -79,96 +68,72 @@ public class WeatherData {
         return country;
     }
 
-    public int getTimezone() {
-        return timezone;
-    }
-
-    public String getSunRise() {
+    public int getSunRise() {
         return sunRise;
     }
 
-    public String getSunSet() {
+    public int getSunSet() {
         return sunSet;
     }
 
-    public int getTemp() {
+    public double getTemp() {
         return temp;
     }
 
-    public int getMin() {
+    public double getMin() {
         return min;
     }
 
-    public int getMax() {
+    public double getMax() {
         return max;
     }
 
-    public String getUnit() {
-        return unit;
-    }
-
-    public int getFeelsLike() {
-        return feelsLike;
-    }
-
-    public String getFeelsUnit() {
-        return feelsUnit;
-    }
-
-    public int getHumidNumber() {
-        return humidNumber;
-    }
-
-    public String getPercent() {
-        return percent;
-    }
-
-    public int getPressureNum() {
-        return pressureNum;
-    }
-
-    public String getPressureUnit() {
-        return pressureUnit;
-    }
-
-    public int getWindSpeed() {
+    public double getWindSpeed() {
         return windSpeed;
     }
 
-    public String getWindUnit() {
-        return windUnit;
+    public String getWeatherMain() {
+        return weatherMain;
     }
 
-    public String getWindName() {
-        return windName;
+    public String getWeatherDescription() {
+        return weatherDescription;
     }
 
-    public int getGust() {
-        return gust;
+    public String getWeatherIcon() {
+        return weatherIcon;
     }
 
-    public String getGustCode() {
-        return gustCode;
+    public double getPressure() {
+        return pressure;
     }
 
-    public String getGustDirection() {
-        return gustDirection;
+    public double getHumidity() {
+        return humidity;
     }
 
-    public int getCloudValue() {
-        return cloudValue;
+    public double getDegree() {
+        return degree;
     }
 
-    public String getCloudName() {
-        return cloudName;
+    public int getClouds() {
+        return clouds;
     }
 
-    public int getVisibility() {
-        return visibility;
+    public int getDt() {
+        return dt;
     }
 
-    public String getPrecipitationMode() {
-        return precipitationMode;
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCod() {
+        return cod;
     }
 
     @Override
@@ -178,29 +143,23 @@ public class WeatherData {
                 ", longitude=" + longitude +
                 ", latitude=" + latitude +
                 ", country='" + country + '\'' +
-                ", timezone=" + timezone +
-                ", sunRise='" + sunRise + '\'' +
-                ", sunSet='" + sunSet + '\'' +
+                ", sunRise=" + sunRise +
+                ", sunSet=" + sunSet +
                 ", temp=" + temp +
                 ", min=" + min +
                 ", max=" + max +
-                ", unit='" + unit + '\'' +
-                ", feelsLike=" + feelsLike +
-                ", feelsUnit='" + feelsUnit + '\'' +
-                ", humidNumber=" + humidNumber +
-                ", percent='" + percent + '\'' +
-                ", pressureNum=" + pressureNum +
-                ", pressureUnit='" + pressureUnit + '\'' +
                 ", windSpeed=" + windSpeed +
-                ", windUnit='" + windUnit + '\'' +
-                ", windName='" + windName + '\'' +
-                ", gust=" + gust +
-                ", gustCode='" + gustCode + '\'' +
-                ", gustDirection='" + gustDirection + '\'' +
-                ", cloudValue=" + cloudValue +
-                ", cloudName='" + cloudName + '\'' +
-                ", visibility=" + visibility +
-                ", precipitationMode='" + precipitationMode + '\'' +
+                ", weatherMain='" + weatherMain + '\'' +
+                ", weatherDescription='" + weatherDescription + '\'' +
+                ", weatherIcon='" + weatherIcon + '\'' +
+                ", pressure=" + pressure +
+                ", humidity=" + humidity +
+                ", degree=" + degree +
+                ", clouds=" + clouds +
+                ", dt=" + dt +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", cod=" + cod +
                 '}';
     }
 }

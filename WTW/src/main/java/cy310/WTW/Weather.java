@@ -1,269 +1,274 @@
 package cy310.WTW;
 
-import java.io.*;
-import java.util.*;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.*;
-import javax.xml.namespace.QName;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-
+/**
+ *
+ * @web http://java-buddy.blogspot.com/
+ */
 public class Weather {
 
-    static int zip = 0;
-    //int ID = 0;  both of these are for the city as input instead of zipcode
-    //String name = "";
-    static float longitude = 0;
-    static float latitude = 0;
-    static String country = "";
-    static int timezone = 0;
-    static String sunRise = "";
-    static String sunSet = "";
-    static int temp = 0;
-    static int min = 0;
-    static int max = 0;
-    static String unit = "";
-    static int feelsLike = 0;
-    static String feelsUnit = "";
-    static int humidNumber = 0;
-    static String percent = "";
-    static int pressureNum = 0;
-    static String pressureUnit = "";
-    static int windSpeed = 0;
-    static String windUnit = "";
-    static String windName = "";
-    static int gust = 0;
-    static String gustCode= "";
-    static String gustDirection = "";
-    static int cloudValue = 0;
-    static String cloudName = "";
-    static int visibility = 0;
-    static String precipitationMode = "";
+    static int zip = 63701;
+    static String url =
+            "http://api.openweathermap.org/data/2.5/weather?zip=" + zip + "&units=imperial&appid=323096ecfa8123ec446946c9ae17c95a";
 
-    //The following are all get functions for the above variables
-    public int getZip(){
-        return zip;
-    }
-    public float getLong(){
+
+    //List of the class variables for the weather object
+    static double longitude; //geographic longitude and latitude
+    static double latitude;
+    static String country; //Country ID
+    static int sunRise; //Sunrise time
+    static int sunSet; //sunset time
+    //static int weatherId; //weather ID no longer shows in API
+    static String weatherMain; //weather type?
+    static String weatherDescription; //weather description
+    static String weatherIcon; //weather Icon (useless for us)
+    static double temp; //temperature in Fahrenheit
+    static double pressure; //pressure
+    static double humidity; //humidity percentage
+    static double min; //lowest possible temp
+    static double max; //max possible temp
+    static double windSpeed;
+    //static double gust; gust no longer appears in the API
+    static double degree; //degree of direction
+    static int clouds;
+    static int dt;
+    static int id;
+    static String name;
+    static int cod;
+
+    double getLongitude(){
         return longitude;
     }
-    public float getLat(){
+
+    double getLatitude(){
         return latitude;
     }
-    public String getCountry(){
+
+    String getCountry(){
         return country;
     }
-    public int getTimeZone(){
-        return timezone;
-    }
-    public String getSunRise(){
+
+    int getSunRise(){
         return sunRise;
     }
-    public String getSunSet(){
+
+    int getSunSet(){
         return sunSet;
     }
-    public int getTemp(){
+
+    String getWeatherMain(){
+        return weatherMain;
+    }
+
+    String getWeatherDescription(){
+        return weatherDescription;
+    }
+
+    String getWeatherIcon(){
+        return weatherIcon;
+    }
+
+    double getTemp(){
         return temp;
     }
-    public int getMin(){
+
+    double getPressure(){
+        return pressure;
+    }
+
+    double getMin(){
         return min;
     }
-    public int getMax(){
+
+    double getMax(){
         return max;
     }
-    public String getTempUnit(){
-        return unit;
-    }
-    public int getFeelsLike(){
-        return feelsLike;
-    }
-    public String getFeelsUnit(){
-        return feelsUnit;
-    }
-    public int getHumidValue(){
-        return humidNumber;
-    }
-    public String getPercent(){
-        return percent;
-    }
-    public int getPressureNum(){
-        return pressureNum;
-    }
-    public String getPressureUnit(){
-        return pressureUnit;
-    }
-    public int getWindSpeed(){
+
+    double getWindSpeed(){
         return windSpeed;
     }
-    public String getWindUnit(){
-        return windUnit;
-    }
-    public String getWindName(){
-        return windName;
-    }
-    public int getGust(){
-        return gust;
-    }
-    public String getGustCode(){
-        return gustCode;
-    }
-    public String getGustDirection(){
-        return gustDirection;
-    }
-    public int getCloudValue(){
-        return cloudValue;
-    }
-    public String getCloudName(){
-        return cloudName;
-    }
-    public int getVisibility(){
-        return visibility;
-    }
-    public String getPrecipitationMode(){
-        return precipitationMode;
+
+    double getHumidity(){
+        return humidity;
     }
 
-    //The main function is where the XML Parser is run
-    public static void fetchData() throws FileNotFoundException, XMLStreamException {
+    int getClouds(){
+        return clouds;
+    }
 
-        //This selects the XML file we will be parsing
-        File file = new File("new.txt");
+    int getDt(){
+        return dt;
+    }
 
-        //Create a Stax Parser
-        XMLInputFactory factory = XMLInputFactory.newInstance();
+    int getId(){
+        return id;
+    }
 
-        //Create an Event reader that reads elements one by one
-        XMLEventReader eventReader = factory.createXMLEventReader(new FileReader(file));
+    String getName(){
+        return name;
+    }
 
-        //Loop so it runs as long as the file has more to read
-        while (eventReader.hasNext()){
-            XMLEvent xmlEvent = eventReader.nextEvent();
+    int getCod(){
+        return cod;
+    }
 
-            //Mark the start element as such to indicate the start
-            if (xmlEvent.isStartElement()) {
-                StartElement startElement = xmlEvent.asStartElement();
 
-                //Read all attributes when start tag is being used
-                @SuppressWarnings("unchecked")
-                Iterator<Attribute> iterator = startElement.getAttributes();
+    public static void fetchData(int zip) {
 
-                //Starts a loop so the parser runs while there is more data to find
-                while (iterator.hasNext()) {
-                    Attribute attribute = iterator.next();
-                    QName name = attribute.getName();
-                    //Checks for the Zip name as an attribute then gets the value
-                    if ("zip".equalsIgnoreCase(name.getLocalPart())) {
-                        zip = Integer.valueOf(attribute.getValue());
-                    }
+        url = "http://api.openweathermap.org/data/2.5/weather?zip=" + zip + "&units=imperial&appid=323096ecfa8123ec446946c9ae17c95a";
+        String result = "";
 
-                    //Switch case where the event reader checks for the specific tags
-                    switch (startElement.getName().getLocalPart()) {
+        try {
+            URL url_weather = new URL(url);
 
-                        case "coord":
-                            Characters longitudeDataEvent = (Characters) eventReader.nextEvent();
-                            longitude = Float.valueOf(longitudeDataEvent.getData());
-                            Characters latitudeDataEvent = (Characters) eventReader.nextEvent();
-                            latitude = Float.valueOf(latitudeDataEvent.getData());
-                            break;
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url_weather.openConnection();
 
-                        case "country":
-                            Characters countryDataEvent = (Characters) eventReader.nextEvent();
-                            country = countryDataEvent.getData();
-                            break;
+            if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
 
-                        case "timezone":
-                            Characters timeZoneDataEvent = (Characters) eventReader.nextEvent();
-                            timezone = Integer.valueOf(timeZoneDataEvent.getData());
-                            break;
-
-                        case "sun":
-                            Characters sunRiseDataEvent = (Characters) eventReader.nextEvent();
-                            sunRise = sunRiseDataEvent.getData();
-                            Characters sunSetDataEvent = (Characters) eventReader.nextEvent();
-                            sunSet = sunSetDataEvent.getData();
-
-                        case "temperature":
-                            Characters tempDataEvent = (Characters) eventReader.nextEvent();
-                            temp = Integer.valueOf(tempDataEvent.getData());
-                            Characters minDataEvent = (Characters) eventReader.nextEvent();
-                            min = Integer.valueOf(minDataEvent.getData());
-                            Characters maxDataEvent = (Characters) eventReader.nextEvent();
-                            max = Integer.valueOf(maxDataEvent.getData());
-                            Characters unitDataEvent = (Characters) eventReader.nextEvent();
-                            unit = unitDataEvent.getData();
-                            break;
-
-                        case "feels_like":
-                            Characters feelsLikeDataEvent = (Characters) eventReader.nextEvent();
-                            feelsLike = Integer.valueOf(feelsLikeDataEvent.getData());
-                            Characters feelsUnitDataEvent = (Characters) eventReader.nextEvent();
-                            feelsUnit = feelsUnitDataEvent.getData();
-                            break;
-
-                        case "humidity":
-                            Characters humidNumberDataEvent = (Characters) eventReader.nextEvent();
-                            humidNumber = Integer.valueOf(humidNumberDataEvent.getData());
-                            Characters percentDataEvent = (Characters) eventReader.nextEvent();
-                            percent = percentDataEvent.getData();
-                            break;
-
-                        case "pressure":
-                            Characters pressureNumDataEvent = (Characters) eventReader.nextEvent();
-                            pressureNum = Integer.valueOf(pressureNumDataEvent.getData());
-                            Characters pressureUnitDataEvent = (Characters) eventReader.nextEvent();
-                            pressureUnit = pressureUnitDataEvent.getData();
-                            break;
-
-                        case "speed":
-                            Characters windSpeedDataEvent = (Characters) eventReader.nextEvent();
-                            windSpeed = Integer.valueOf(windSpeedDataEvent.getData());
-                            Characters windUnitDataEvent = (Characters) eventReader.nextEvent();
-                            windUnit = windUnitDataEvent.getData();
-                            Characters windNameDataEvent = (Characters) eventReader.nextEvent();
-                            windName = windNameDataEvent.getData();
-                            break;
-
-                        case "direction":
-                            Characters gustDataEvent = (Characters) eventReader.nextEvent();
-                            gust = Integer.valueOf(gustDataEvent.getData());
-                            Characters gustCodeDataEvent = (Characters) eventReader.nextEvent();
-                            gustCode = gustCodeDataEvent.getData();
-                            Characters gustDirectionDataEvent = (Characters) eventReader.nextEvent();
-                            gustDirection = gustDirectionDataEvent.getData();
-                            break;
-
-                        case "clouds":
-                            Characters cloudValueDataEvent = (Characters) eventReader.nextEvent();
-                            cloudValue = Integer.valueOf(cloudValueDataEvent.getData());
-                            Characters cloudNameDataEvent = (Characters) eventReader.nextEvent();
-                            cloudName = cloudNameDataEvent.getData();
-                            break;
-
-                        case "visibility":
-                            Characters visibilityDataEvent = (Characters) eventReader.nextEvent();
-                            visibility = Integer.valueOf(visibilityDataEvent.getData());
-                            break;
-
-                        case "precipitation":
-                            Characters precipitationModeDataEvent = (Characters) eventReader.nextEvent();
-                            precipitationMode = precipitationModeDataEvent.getData();
-                            break;
-
-                        default:
-                            break;
-
-                    }
+                InputStreamReader inputStreamReader =
+                        new InputStreamReader(httpURLConnection.getInputStream());
+                BufferedReader bufferedReader =
+                        new BufferedReader(inputStreamReader, 8192);
+                String line = null;
+                while((line = bufferedReader.readLine()) != null){
+                    result += line;
                 }
 
-                //Determines the end element as the end of the loop
-                if(xmlEvent.isEndElement()){
-                    EndElement endElement = xmlEvent.asEndElement();
-                }
+                bufferedReader.close();
 
+                ParseResult(result);
+                //String weatherResult = ParseResult(result);
+                //These were for the output of the string value
+                //System.out.println(weatherResult);
+
+            } else {
+                System.out.println("Error in httpURLConnection.getResponseCode()!!!");
             }
+
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Weather.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Weather.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (JSONException ex) {
+            Logger.getLogger(Weather.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+
+    //Parses the values from the API and saves the values in variables
+    static private void ParseResult(String json) throws JSONException{
+
+        String parsedResult = "";
+
+        JSONObject jsonObject = new JSONObject(json);
+
+        parsedResult += "Number of object = " + jsonObject.length() + "\n\n";
+
+        //"coord"
+        JSONObject JSONObject_coord = jsonObject.getJSONObject("coord");
+        Double result_lon = JSONObject_coord.getDouble("lon");
+        longitude = result_lon;
+        Double result_lat = JSONObject_coord.getDouble("lat");
+        latitude = result_lat;
+
+        //"sys"
+        JSONObject JSONObject_sys = jsonObject.getJSONObject("sys");
+        String result_country = JSONObject_sys.getString("country");
+        country = result_country;
+        int result_sunrise = JSONObject_sys.getInt("sunrise");
+        sunRise = result_sunrise;
+        int result_sunset = JSONObject_sys.getInt("sunset");
+        sunSet = result_sunset;
+
+        //"weather"
+        String result_weather;
+        JSONArray JSONArray_weather = jsonObject.getJSONArray("weather");
+        if(JSONArray_weather.length() > 0){
+            JSONObject JSONObject_weather = JSONArray_weather.getJSONObject(0);
+            int result_id = JSONObject_weather.getInt("id");
+            id = result_id;
+            String result_main = JSONObject_weather.getString("main");
+            weatherMain = result_main;
+            String result_description = JSONObject_weather.getString("description");
+            weatherDescription = result_description;
+            String result_icon = JSONObject_weather.getString("icon");
+            weatherIcon = result_icon;
+
+            result_weather = "weather\tid: " + result_id +"\tmain: " + result_main + "\tdescription: " + result_description + "\ticon: " + result_icon;
+        }else{
+            result_weather = "weather empty!";
         }
 
+        //"base"
+        String result_base = jsonObject.getString("base");
+
+        //"main"
+        JSONObject JSONObject_main = jsonObject.getJSONObject("main");
+        Double result_temp = JSONObject_main.getDouble("temp");
+        temp = result_temp;
+        Double result_pressure = JSONObject_main.getDouble("pressure");
+        pressure = result_pressure;
+        Double result_humidity = JSONObject_main.getDouble("humidity");
+        humidity = result_humidity;
+        Double result_temp_min = JSONObject_main.getDouble("temp_min");
+        min = result_temp_min;
+        Double result_temp_max = JSONObject_main.getDouble("temp_max");
+        max = result_temp_max;
+
+        //"wind"
+        JSONObject JSONObject_wind = jsonObject.getJSONObject("wind");
+        Double result_speed = JSONObject_wind.getDouble("speed");
+        windSpeed = result_speed;
+        //Double result_gust = JSONObject_wind.getDouble("gust");
+        //gust = result_gust;
+        Double result_deg = JSONObject_wind.getDouble("deg");
+        degree = result_deg;
+        String result_wind = "wind\tspeed: " + result_speed + "\tdeg: " + result_deg;
+
+        //"clouds"
+        JSONObject JSONObject_clouds = jsonObject.getJSONObject("clouds");
+        int result_all = JSONObject_clouds.getInt("all");
+        clouds = result_all;
+
+        //"dt"
+        int result_dt = jsonObject.getInt("dt");
+        dt = result_dt;
+
+        //"id"
+        int result_id = jsonObject.getInt("id");
+        id = result_id;
+
+        //"name"
+        String result_name = jsonObject.getString("name");
+        name = result_name;
+
+        //"cod"
+        int result_cod = jsonObject.getInt("cod");
+        cod = result_cod;
+
+        /*return this was the original output for the program that allowed a return string
+                "coord\tlon: " + result_lon + "\tlat: " + result_lat + "\n" +
+                        "sys\tcountry: " + result_country + "\tsunrise: " + result_sunrise + "\tsunset: " + result_sunset + "\n" +
+                        result_weather + "\n"+
+                        "base: " + result_base + "\n" +
+                        "main\ttemp: " + result_temp + "\thumidity: " + result_humidity + "\tpressure: " + result_pressure + "\ttemp_min: " + result_temp_min + "\ttemp_max: " + result_temp_min + "\n" +
+                        result_wind + "\n" +
+                        "clouds\tall: " + result_all + "\n" +
+                        "dt: " + result_dt + "\n" +
+                        "id: " + result_id + "\n" +
+                        "name: " + result_name + "\n" +
+                        "cod: " + result_cod + "\n" +
+                        "\n"; */
     }
 }
-//"api.openweathermap.org/data/2.5/weather?zip={zip code}&units-metric&appid={323096ecfa8123ec446946c9ae17c95a}"
