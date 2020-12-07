@@ -9,94 +9,94 @@
  <h2>Home Page</h2>
  <script>
 	//const username = localStorage["user"];
-	const username = localStorage.getItem('user');
-	const zip = 0;//get from server with username
+	//const username = localStorage.getItem('currentUser');
+    const username = "admin";
+	const zip = 63701;//get from server with username
 
 	//prints username and zipcode for testing
 	document.write("Welcome, " + username + "!<br>");
 	document.write("Zipcode: " + zip + "<br>");
 
-    fetch('http://localhost:8080/weatherdata/{zip})')
+    //const queryString = window.location.search;
+    //const urlParams = new URLSearchParams(queryString);
+    //const zip = urlParams.get('zip');
+
+    /*
+    fetch(`http://localhost:8080/user/${username}`)
             .then(response => response.json())
-            .then(json => console.log(json));
+            .then (json => getUserValues(json));
 
-	//get this weather information from server with functions based on zip code provided above
-	const longitude = 0;
-	const latitude = 0;
-	const country = "";
-	const timezone = 0;
-	const sunrise = "";
-	const sunset = "";
-	const temp = 0;
-	const highTemp = 0;
-	const lowTemp = 0;
-	const tempUnit = "";
-	const feelsLike = 0;
-	const feelsUnit = "";
-	const humidity = 0;
-	const windSpeed = 0;
-	const windUnit = "";
-	const precipMode = "";
+    const userRequest =
+            fetch(`http://localhost:8080/user/${username}`).then(function(response) {
+            return response.json()
+    });
+    const weatherRequest =
+            fetch(`http://localhost:8080/weatherdata/${zip}`).then(function(response) {
+             return response.json()
+            });
+    var combined = {"userRequest":{},"weatherRequest":{}};
+    Promise.all([userRequest, weatherRequest]).then(function(values){
+     combinedData["userRequest"] = values[0];
+     combinedData["weatherRequest"] = values[1];
+     displayWeather(combinedData[1]);
+     return combinedData;
+    });
 
-	//return the user's values from the database here, using the username above
-	/*
-	const shortsRec = 0;
-	const shirtRec = 0;
-	const jacketRec = 0;
-	const coatRec = 0;
-	*/
+    function getUserValues() {
+     const zip = JSON.stringify(data.zipCode);
+     const shortsRec = JSON.stringify(data.shortsRec);
+     const shirtRec = JSON.stringify(data.shortsRec);
+     const jacketRec = JSON.stringify(data.jacketThreshold);
+     const coatRec = JSON.stringify(data.coatThreshold);
+    }
+    */
+    fetch(`http://localhost:8080/weatherdata/${zip}`)
+            .then(response => response.json())
+            .then (json => displayWeather(json));
 
-	//testing, comment this area out after implemented above
-	const shortsRec = 75;
-	const shirtRec = 75;
-	const jacketRec = 60;
-	const coatRec = 40;
+    function displayWeather(data){
+     document.write("<div style=\"text-align:center\"><br><h2>Today's Weather</h2>");
+     document.write("Welcome, " + username + "!<br>");
+     document.write("Zipcode: " + zip + "<br>");
 
-	//displays current weather conditions
-	document.write("<h3>Weather Conditions:</h3>");
-	document.write("Sunrise: " + sunrise + "<br>");
-	document.write("Sunset: " + sunset + "<br>");
-	document.write("Current Temperature: " + temp + tempUnit + "<br>");
-	document.write("High Temperature: " + highTemp + tempUnit + "<br>");
-	document.write("Low Temperature: " + lowTemp + tempUnit + "<br>");
-	document.write("Feels Like: " + feelsLike + feelsUnit + "<br>");
-	document.write("Humidity: " + humidity + "%<br>");
-	document.write("Wind: " + windSpeed + " " + windUnit + "<br>");
-	document.write("Precipitation: " + precipMode + "<br>");
+     document.write("<h3>Weather Conditions for " + zip + ":</h3>");
+     document.write(JSON.stringify(data.weatherMain) + "<br>");
+     document.write("Current Temperature: " + JSON.stringify(data.temp) + " F<br>");
+     document.write("High Temperature: " + JSON.stringify(data.max) + " F<br>");
+     document.write("Low Temperature: " + JSON.stringify(data.min) + " F<br>");
+     document.write("Humidity: " + JSON.stringify(data.humidity) + "%<br>");
+     document.write("Wind: " + JSON.stringify(data.windSpeed) + "mph <br>");
 
-	//displays recommendations
-	document.write("<br><h3>Today's Recommendations:</h3>");
-	if (highTemp >= shortsRec) {
-		document.write("Shorts/T-shirt<br>");
-	}
-	else {
-		document.write("Pants<br>");
-	}
+     //variables for recommendations with default values
+     const shortsRec = 75;
+     const shirtRec = 75;
+     const jacketRec = 60;
+     const coatRec = 40;
 
-	if (highTemp >= shirtRec) {
-		document.write("T-shirt<br>");
-	}
-	else {
-		document.write("Long sleeve shirt<br>");
-	}
+     document.write("<br><h3>Today's Recommendations:</h3>");
+     if (data.max >= shortsRec) {
+      document.write("Shorts/T-shirt<br>");
+     }
+     else {
+      document.write("Pants<br>");
+     }
 
-	if (lowTemp <= jacketRec && lowTemp > coatRec) {
-		document.write("Sweater/Jacket<br>");
-	}
-	else if (lowTemp >= coatRec) {
-		document.write("Coat<br>");
-	}
+     if (data.max >= shirtRec) {
+      document.write("T-shirt<br>");
+     }
+     else {
+      document.write("Long sleeve shirt<br>");
+     }
 
-	//adjust this based on how precipMode is returned from the server
-	/*
-	if (precipMode == "rain") {
-		document.write("Umbrella<br>");
-	}
-	else if (precipMode == "snow")
-		document.write("Snow boots<br>");
-	}
-	*/
+     if (data.min <= jacketRec && data.min > coatRec) {
+      document.write("Sweater/Jacket<br>");
+     }
+     else if (data.min <= coatRec) {
+      document.write("Coat<br>");
+     }
 
+     document.write("<br><br><hr>");document.write("</div>");
+    }
  </script>
 
 </center>
