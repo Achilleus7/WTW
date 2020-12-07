@@ -18,7 +18,7 @@
      document.write("<div style=\"text-align:center\"><br><h2>Today's Weather</h2>");
      document.write("<p><a href=\"index.html\">Return to homepage.</a></p></center>");
 
-     document.write("<h3>Weather Conditions for " + zip + ":</h3>");
+     document.write("<h3>Weather Conditions for "+ JSON.stringify(data.name) + " (" +  zip + "):</h3>");
      document.write(JSON.stringify(data.weatherMain) + "<br>");
      document.write("Current Temperature: " + JSON.stringify(data.temp) + " F<br>");
      document.write("High Temperature: " + JSON.stringify(data.max) + " F<br>");
