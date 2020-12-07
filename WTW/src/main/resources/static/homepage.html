@@ -11,7 +11,7 @@
 	//const username = localStorage["user"];
 	//const username = localStorage.getItem('currentUser');
     const username = "admin";
-	const zip = 63701;//get from server with username
+	const zip = 63101;//get from server with username
 
 	//prints username and zipcode for testing
 	document.write("Welcome, " + username + "!<br>");
@@ -57,9 +57,9 @@
     function displayWeather(data){
      document.write("<div style=\"text-align:center\"><br><h2>Today's Weather</h2>");
      document.write("Welcome, " + username + "!<br>");
-     document.write("Zipcode: " + zip + "<br>");
+     //document.write("Zipcode: " + zip + "<br>");
 
-     document.write("<h3>Weather Conditions for " + zip + ":</h3>");
+     document.write("<h3>Weather Conditions for "+ JSON.stringify(data.name) + " (" +  zip + "):</h3>");
      document.write(JSON.stringify(data.weatherMain) + "<br>");
      document.write("Current Temperature: " + JSON.stringify(data.temp) + " F<br>");
      document.write("High Temperature: " + JSON.stringify(data.max) + " F<br>");
